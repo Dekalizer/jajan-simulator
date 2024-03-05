@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/ShelfGUI.gd" type="Script" id=1]
+
+[node name="ShelfGUI" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 300.0
+margin_bottom = 200.0
+color = Color( 0.580392, 0.576471, 0.576471, 1 )
+
+[node name="ItemImage" type="TextureRect" parent="."]
+margin_left = 9.0
+margin_top = 9.0
+margin_right = 44.0
+margin_bottom = 45.0
+
+[node name="ItemPrice" type="Label" parent="."]
+margin_left = 62.0
+margin_top = 25.0
+margin_right = 87.0
+margin_bottom = 39.0
+text = "test"
+
+[node name="ItemQty" type="Label" parent="."]
+margin_left = 157.0
+margin_top = 25.0
+margin_right = 197.0
+margin_bottom = 39.0
+
+[node name="TotalPrice" type="Label" parent="."]
+margin_left = 235.0
+margin_top = 26.0
+margin_right = 275.0
+margin_bottom = 40.0
+
+[node name="PlusButton" type="Button" parent="."]
+margin_left = 200.0
+margin_top = 22.0
+margin_right = 212.0
+margin_bottom = 42.0
+
+[node name="MinusButton" type="Button" parent="."]
+margin_left = 138.0
+margin_top = 22.0
+margin_right = 150.0
+margin_bottom = 42.0
+
+[node name="AddToCartButton" type="Button" parent="."]
+margin_left = 220.0
+margin_top = 175.0
+margin_right = 293.0
+margin_bottom = 195.0
+
+[node name="CloseButton" type="Button" parent="."]
+margin_left = 278.0
+margin_top = 2.0
+margin_right = 298.0
+margin_bottom = 22.0
