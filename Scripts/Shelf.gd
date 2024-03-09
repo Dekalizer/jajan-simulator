@@ -2,8 +2,8 @@ extends Node2D
 
 # Shelf properties
 var shelf_items = {
-	"Food": ["Instant Noodle", "Corned Beef", "Bread"],
-	"Drink": ["Milk", "Mineral Water", "Soda"],
+	"Food": ["Noodle", "Corned Beef", "Bread"],
+	"Drink": ["Milk", "Water", "Soda"],
 	"Veg": ["Carrot", "Onion", "Broccoli"],
 	"Fruit": ["Apple", "Orange", "Banana"],
 	"Meat": ["Beef", "Chicken", "Fish"],
@@ -22,7 +22,8 @@ func _ready():
 
 func _process(delta):
 	# Handle player interaction
-	if player_in_range and Input.is_action_pressed("interact"):
+	if player_in_range and Input.is_action_pressed("interact") and !player.get_gui_opened():
+		player.set_gui_opened(true)
 		open_shelf_gui()
 		print("opened gui!")
 		player.disable_move()
@@ -31,10 +32,6 @@ func _process(delta):
 func open_shelf_gui():
 	gui.populate_gui(shelf_type, shelf_items[shelf_type])
 	gui.visible = true
-	
-	print("current cart:")
-	print(player.cart)
-	
 
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":

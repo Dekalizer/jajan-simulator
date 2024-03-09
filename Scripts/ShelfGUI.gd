@@ -2,11 +2,11 @@ extends Control
 
 # item properties with the format = "Item Name": [price, weight, tile_number]
 var item_properties = {
-	"Instant Noodle": [100, 100, 12],
+	"Noodle": [100, 100, 12],
 	"Corned Beef": [100, 100, 13],
 	"Bread": [100, 100, 14],
 	"Milk": [100, 100, 0],
-	"Mineral Water": [100, 100, 1],
+	"Water": [100, 100, 1],
 	"Soda": [100, 100, 2],
 	"Carrot": [100, 100, 6],
 	"Onion": [100, 100, 7],
@@ -26,7 +26,6 @@ var item_properties = {
 }
 
 onready var player = get_parent().get_node("Player")
-onready var cart = player.cart
 
 signal shelf_gui_opened
 signal shelf_gui_closed
@@ -36,6 +35,7 @@ func quit():
 
 # shelf_type, ["noodle", "corned beef", "bread"]
 func populate_gui(shelf_type, shelf_items):
+	var cart = player.get_cart()
 	$ItemName1.text = shelf_items[0]
 	$ItemName2.text = shelf_items[1]
 	$ItemName3.text = shelf_items[2]
@@ -70,39 +70,52 @@ func _on_PlusButton3_pressed():
 	$ItemQty3.text = str(qty)
 
 func _on_MinusButton1_pressed():
-	var qty = int($ItemQty1.text)
-	if qty > 0:
-		qty -= 1
+	var qty = int($ItemQty1.text) - 1
+	if qty < 0:
+		qty = 0
 	$ItemQty1.text = str(qty)
 
 func _on_MinusButton2_pressed():
-	var qty = int($ItemQty2.text)
-	if qty > 0:
-		qty -= 1
+	var qty = int($ItemQty2.text) - 1
+	if qty < 0:
+		qty = 0
 	$ItemQty2.text = str(qty)
 
 func _on_MinusButton3_pressed():
-	var qty = int($ItemQty3.text)
-	if qty > 0:
-		qty -= 1
+	var qty = int($ItemQty3.text) - 1
+	if qty < 0:
+		qty = 0
 	$ItemQty3.text = str(qty)
 
 func _on_AddToCartButton_pressed():
 	update_cart()
+	remove_empty_item()
+	print("cart updated!")
+	print(player.get_cart())
 	player.enable_move()
+	player.set_gui_opened(false)
 	visible = false
 
+func remove_empty_item():
+	var cart = player.get_cart()
+	var no_zero_item_cart = {}
+	for item_name in cart.keys():
+		if cart[item_name] > 0:
+			no_zero_item_cart[item_name] = cart[item_name]
+	player.set_cart(no_zero_item_cart)
+
 func update_cart():
-	cart.clear()
 	update_item_cart($ItemName1.text, $ItemQty1.text)
 	update_item_cart($ItemName2.text, $ItemQty2.text)
 	update_item_cart($ItemName3.text, $ItemQty3.text)
 
 func update_item_cart(item_name, item_qty):
+	var cart = player.get_cart()
 	var qty = int(item_qty)
-	if qty > 0:
-		cart[item_name] = qty
+	cart[item_name] = qty
+	player.set_cart(cart)
 
 func _on_CloseButton_pressed():
 	player.enable_move()
+	player.set_gui_opened(false)
 	visible = false

@@ -12,12 +12,25 @@ var stamina = MAX_STAMINA
 var sprinting = false
 var can_sprint = true
 var can_move = true
+var gui_opened = false
 var sprint_speed = MOVE_SPEED * SPRINT_SPEED_MULTIPLIER
 
 var cart = {}
 
 func _ready():
 	pass
+
+func get_cart():
+	return self.cart
+
+func set_cart(updated_cart):
+	self.cart = updated_cart
+
+func get_gui_opened():
+	return self.gui_opened
+
+func set_gui_opened(val):
+	self.gui_opened = val
 
 func _physics_process(delta):
 	if can_move:
