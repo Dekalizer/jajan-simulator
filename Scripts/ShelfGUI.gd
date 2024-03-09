@@ -2,27 +2,27 @@ extends Control
 
 # item properties with the format = "Item Name": [price, weight, tile_number]
 var item_properties = {
-	"Noodle": [100, 100, 12],
-	"Corned Beef": [100, 100, 13],
-	"Bread": [100, 100, 14],
-	"Milk": [100, 100, 0],
-	"Water": [100, 100, 1],
-	"Soda": [100, 100, 2],
-	"Carrot": [100, 100, 6],
-	"Onion": [100, 100, 7],
-	"Broccoli": [100, 100, 8],
-	"Apple": [100, 100, 3],
-	"Orange": [100, 100, 4],
-	"Banana": [100, 100, 5],
-	"Bucket": [100, 100, 9],
-	"Broom": [100, 100, 10],
-	"Mop": [100, 100, 11],
-	"Beef": [100, 100, 21],
-	"Chicken": [100, 100, 16],
-	"Fish": [100, 100, 22],
-	"Nugget": [100, 100, 17],
-	"Meatball": [100, 100, 18],
-	"Sausage": [100, 100, 19]
+	"Noodle": [85, 12],
+	"Corned Beef": [340, 13],
+	"Bread": [370, 14],
+	"Milk": [1000, 0],
+	"Water": [600, 1],
+	"Soda": [250, 2],
+	"Carrot": [300, 6],
+	"Onion": [280, 7],
+	"Broccoli": [250, 8],
+	"Apple": [200, 3],
+	"Orange": [150, 4],
+	"Banana": [100, 5],
+	"Bucket": [400, 9],
+	"Broom": [400, 10],
+	"Mop": [500, 11],
+	"Beef": [500, 21],
+	"Chicken": [300, 16],
+	"Fish": [400, 22],
+	"Nugget": [250, 17],
+	"Meatball": [150, 18],
+	"Sausage": [300, 19]
 }
 
 onready var player = get_parent().get_node("Player")
@@ -40,9 +40,9 @@ func populate_gui(shelf_type, shelf_items):
 	$ItemName2.text = shelf_items[1]
 	$ItemName3.text = shelf_items[2]
 	
-	$ItemImage.set_cell(5, 5, item_properties[shelf_items[0]][2])
-	$ItemImage.set_cell(5, 100, item_properties[shelf_items[1]][2])
-	$ItemImage.set_cell(5, 195, item_properties[shelf_items[2]][2])
+	$ItemImage.set_cell(5, 5, item_properties[shelf_items[0]][1])
+	$ItemImage.set_cell(5, 100, item_properties[shelf_items[1]][1])
+	$ItemImage.set_cell(5, 195, item_properties[shelf_items[2]][1])
 
 	if cart.has(shelf_items[0]):
 		$ItemQty1.text = str(cart[shelf_items[0]])
@@ -105,7 +105,7 @@ func update_weight():
 	var updated_weight = 0
 	for item in cart.keys():
 		for qty in range(cart[item]):
-			updated_weight += item_properties[item][1]
+			updated_weight += item_properties[item][0]
 	
 	player.set_weight(updated_weight)
 

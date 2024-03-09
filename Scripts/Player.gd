@@ -3,9 +3,9 @@ extends KinematicBody2D
 # Player properties
 export var DEFAULT_MOVE_SPEED = 150
 export var SPRINT_SPEED_MULTIPLIER = 1.5
-export var MAX_STAMINA = 100
+export var MAX_STAMINA = 100.0
 export var STAMINA_REGEN_RATE = 20  # Amount of stamina regenerated per second
-export var MAX_WEIGHT = 500 # in grams
+export var MAX_WEIGHT = 3000.0 # in grams
 
 # Player state
 var velocity = Vector2()
@@ -19,9 +19,15 @@ var sprint_speed = move_speed * SPRINT_SPEED_MULTIPLIER
 var cart = {}
 var weight = 0
 
+onready var weight_bar = get_node("UI/WeightBar")
+onready var stamina_bar = get_node("UI/StaminaBar")
+
 
 func _ready():
 	pass
+
+func _process(delta):
+	update_bars()
 
 func get_weight():
 	return self.weight
@@ -40,6 +46,10 @@ func get_gui_opened():
 
 func set_gui_opened(val):
 	self.gui_opened = val
+
+func update_bars():
+	weight_bar.set_value(weight / MAX_WEIGHT * 100)
+	stamina_bar.set_value(stamina / MAX_STAMINA * 100)
 
 func _physics_process(delta):
 	if weight > MAX_WEIGHT:

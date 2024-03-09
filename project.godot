@@ -146,6 +146,11 @@ dialogic_default_action={
  ]
 }
 
+[layer_names]
+
+2d_render/layer_1="UI"
+2d_render/layer_2="Background"
+
 [physics]
 
 common/enable_pause_aware_picking=true
