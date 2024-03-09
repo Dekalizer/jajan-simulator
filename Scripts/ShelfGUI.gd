@@ -90,11 +90,24 @@ func _on_MinusButton3_pressed():
 func _on_AddToCartButton_pressed():
 	update_cart()
 	remove_empty_item()
+	update_weight()
 	print("cart updated!")
 	print(player.get_cart())
+	print("new weight")
+	print(player.get_weight())
+	
 	player.enable_move()
 	player.set_gui_opened(false)
 	visible = false
+
+func update_weight():
+	var cart = player.get_cart()
+	var updated_weight = 0
+	for item in cart.keys():
+		for qty in range(cart[item]):
+			updated_weight += item_properties[item][1]
+	
+	player.set_weight(updated_weight)
 
 func remove_empty_item():
 	var cart = player.get_cart()
