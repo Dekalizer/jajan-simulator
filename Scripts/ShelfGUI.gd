@@ -27,9 +27,6 @@ var item_properties = {
 
 onready var player = get_parent().get_node("Player")
 
-signal shelf_gui_opened
-signal shelf_gui_closed
-
 func quit():
 	queue_free()
 
@@ -90,7 +87,8 @@ func _on_MinusButton3_pressed():
 func _on_AddToCartButton_pressed():
 	update_cart()
 	remove_empty_item()
-	update_weight()
+	player.update_weight()
+	player.update_inventory()
 	print("cart updated!")
 	print(player.get_cart())
 	print("new weight")
@@ -99,15 +97,6 @@ func _on_AddToCartButton_pressed():
 	player.enable_move()
 	player.set_gui_opened(false)
 	visible = false
-
-func update_weight():
-	var cart = player.get_cart()
-	var updated_weight = 0
-	for item in cart.keys():
-		for qty in range(cart[item]):
-			updated_weight += item_properties[item][0]
-	
-	player.set_weight(updated_weight)
 
 func remove_empty_item():
 	var cart = player.get_cart()
@@ -121,6 +110,7 @@ func update_cart():
 	update_item_cart($ItemName1.text, $ItemQty1.text)
 	update_item_cart($ItemName2.text, $ItemQty2.text)
 	update_item_cart($ItemName3.text, $ItemQty3.text)
+	
 
 func update_item_cart(item_name, item_qty):
 	var cart = player.get_cart()

@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/NinePatch 2.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Fonts/Kenney Pixel.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scripts/ContinueShoppingButton.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 140
+font_data = ExtResource( 2 )
+
+[node name="ContinueShoppingButton" type="Control"]
+margin_right = 555.0
+margin_bottom = 236.0
+script = ExtResource( 3 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_right = 507.0
+margin_bottom = 236.0
+texture = ExtResource( 1 )
+patch_margin_left = 60
+patch_margin_top = 60
+patch_margin_right = 60
+patch_margin_bottom = 120
+
+[node name="Text" type="Label" parent="NinePatchRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -220.0
+margin_top = -124.5
+margin_right = 220.0
+margin_bottom = 90.5
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 0.8, 0.65098, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Continue Shopping"
+align = 1
+autowrap = true
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 553.0
+margin_bottom = 236.0
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

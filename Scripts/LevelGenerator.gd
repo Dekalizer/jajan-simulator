@@ -13,17 +13,25 @@ var tile_dict_edge = {"White":[38,28,33,39], "Black":[53,48,52,57], "Freeze":[92
 
 # "category":["bot_tile","top_tile","tile_color_type"]
 var tile_dict = {"Food":[35,31,"White"], "Drink":[36,30,"White"], "Home":[34,32,"White"], "Veg":[55,50,"Black"], "Fruit":[56,51,"Black"], "Meat":[98,96,"Freeze"], "Nugget":[90,89,"Freeze"]}
+
+# 22 = Box, 23 = Water
+var tile_obstacle = [22, 23]
 onready var shelf_top : TileMap = get_node(SHELF_TOP)
 onready var shelf_bot : TileMap = get_node(SHELF_BOT)
+onready var obstacle : TileMap = get_node(OBSTACLES)
+
 onready var shelf_scene = preload("res://Scenes/Shelf.tscn")
 
 export var SHELF_TOP = "ObjTopPart"
 export var SHELF_BOT = "ObjBottomPart"
+export var OBSTACLES = "Obstacle"
 
 # uses bottom left of shelf tiles coords
 # order is White, White, White, Black, Black, Freeze, Freeze
 export var SHELF_COORD = [[2,10], [6,12], [12,8], [2,8], [10,4], [2,2], [10,2]] 
 export var SHELF_RANGE = 5
+export var OBSTACLE_COORD = [[5,4],[9,4],[15,5],[17,4],[3,5],[11,7],[1,8],[17,8],[1,10],[9,10]]
+export var OBSTACLE_COUNT = 3
 
 onready var shelf_gui = get_node("ShelfGUI")
 onready var player = get_node("Player")
@@ -31,6 +39,10 @@ onready var player = get_node("Player")
 func _ready():
 	randomize_section()
 	place_shelf()
+	if OBSTACLE_COUNT > 1:
+		if OBSTACLE_COUNT > OBSTACLE_COORD.size():
+			OBSTACLE_COUNT = OBSTACLE_COORD.size()
+		place_obstacle()
 
 func _process(delta):
 	shelf_gui.rect_position = player.position - Vector2(269/2, 223/2)
@@ -43,6 +55,13 @@ func randomize_section():
 	shelf_list = shelf_list1 + shelf_list2 + shelf_list3
 	print("Generated shelf: " + str(shelf_list))
 	return shelf_list
+
+func randomize_obstacle():
+	OBSTACLE_COORD.shuffle()
+	var randomized_obstacle = []
+	for i in range(0, OBSTACLE_COUNT):
+		randomized_obstacle.append(OBSTACLE_COORD[i])
+	return randomized_obstacle
 
 func randomize_emptiness():
 	var filled_shelf = 1 + randi() % SHELF_RANGE
@@ -95,6 +114,11 @@ func place_shelf():
 				shelf_top.set_cell(shelf_x, shelf_y-1, tile_dict_empty[shelf_color_type][1])
 			shelf_x += 1
 
+func place_obstacle():
+	var generated_obstacle = randomize_obstacle()
+	print("Generated obstacles on: " + str(generated_obstacle))
+	for i in range(generated_obstacle.size()):
+		obstacle.set_cell(generated_obstacle[i][0], generated_obstacle[i][1], tile_obstacle[randi() % tile_obstacle.size() ])
 
 
 func _on_Button_pressed():

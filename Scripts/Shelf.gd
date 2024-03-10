@@ -25,7 +25,7 @@ func _process(delta):
 	if player_in_range and Input.is_action_pressed("interact") and !player.get_gui_opened():
 		player.set_gui_opened(true)
 		open_shelf_gui()
-		print("opened gui!")
+		print("opened " + shelf_type + " gui!")
 		player.disable_move()
 		
 
