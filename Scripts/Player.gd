@@ -33,6 +33,7 @@ export var MAX_WEIGHT = 3000.0 # in grams
 
 # Player state
 var velocity = Vector2()
+var last_movement_direction = Vector2()
 var stamina = MAX_STAMINA
 var sprinting = false
 var can_sprint = true
@@ -42,6 +43,7 @@ var move_speed = DEFAULT_MOVE_SPEED
 var sprint_speed = move_speed * SPRINT_SPEED_MULTIPLIER
 var cart = {}
 var weight = 0
+var default_animation_speed = 2
 
 onready var weight_bar = get_node("UI/BottomUI/WeightBar")
 onready var stamina_bar = get_node("UI/BottomUI/StaminaBar")
@@ -56,7 +58,7 @@ onready var inv_2_slots = get_parent().get_node("Player/UI/CashierGUI/Inventory/
 
 
 func _ready():
-	pass
+	last_movement_direction = Vector2.ZERO
 
 func _process(delta):
 	update_bars()
@@ -65,6 +67,16 @@ func _process(delta):
 		$UI/Inventory.visible = true
 	else:
 		$UI/Inventory.visible = false
+	
+		# Determine last movement direction
+	if velocity.x > 0:
+		last_movement_direction = Vector2.RIGHT
+	elif velocity.x < 0:
+		last_movement_direction = Vector2.LEFT
+	elif velocity.y > 0:
+		last_movement_direction = Vector2.DOWN
+	elif velocity.y < 0:
+		last_movement_direction = Vector2.UP
 
 func get_weight():
 	return self.weight
@@ -131,15 +143,27 @@ func _physics_process(delta):
 	if weight_percentage <= 1.0:
 		move_speed = DEFAULT_MOVE_SPEED
 		sprint_speed = move_speed * SPRINT_SPEED_MULTIPLIER
+		$AnimatedSprite.speed_scale = default_animation_speed
 	else:
-		# Calculate the slowdown factor based on the weight percentage
-		var slowdown_factor = (weight_percentage - 1.0) * 100
+		$AnimatedSprite.speed_scale = max(0.3, 1.0 - weight_percentage) * default_animation_speed
 
 		# Apply the slowdown to the move speed
 		move_speed = DEFAULT_MOVE_SPEED * (1.0 - min(1.0, weight_percentage - 1.0))
 
 		# Update sprint speed based on the new move speed
 		sprint_speed = move_speed * SPRINT_SPEED_MULTIPLIER
+	
+	# Handle idle sprite
+	if velocity == Vector2.ZERO:
+		match last_movement_direction:
+			Vector2.UP:
+				$AnimatedSprite.play("CharacterUpIdle")
+			Vector2.DOWN:
+				$AnimatedSprite.play("CharacterDownIdle")
+			Vector2.LEFT:
+				$AnimatedSprite.play("CharacterLeftIdle")
+			Vector2.RIGHT:
+				$AnimatedSprite.play("CharacterRightIdle")
 	
 	if can_move:
 		# Handle sprinting
@@ -148,12 +172,16 @@ func _physics_process(delta):
 			velocity.x = 0
 			velocity.y = 0
 			if Input.is_action_pressed("ui_up"):
+				$AnimatedSprite.play("CharacterUp")
 				velocity.y -= sprint_speed
-			if Input.is_action_pressed("ui_down"):
+			elif Input.is_action_pressed("ui_down"):
+				$AnimatedSprite.play("CharacterDown")
 				velocity.y += sprint_speed
-			if Input.is_action_pressed("ui_left"):
+			elif Input.is_action_pressed("ui_left"):
+				$AnimatedSprite.play("CharacterLeft")
 				velocity.x -= sprint_speed
-			if Input.is_action_pressed("ui_right"):
+			elif Input.is_action_pressed("ui_right"):
+				$AnimatedSprite.play("CharacterRight")
 				velocity.x += sprint_speed
 		else:
 			sprinting = false
@@ -161,12 +189,16 @@ func _physics_process(delta):
 			velocity.x = 0
 			velocity.y = 0
 			if Input.is_action_pressed("ui_up"):
+				$AnimatedSprite.play("CharacterUp")
 				velocity.y -= move_speed
-			if Input.is_action_pressed("ui_down"):
+			elif Input.is_action_pressed("ui_down"):
+				$AnimatedSprite.play("CharacterDown")
 				velocity.y += move_speed
-			if Input.is_action_pressed("ui_left"):
+			elif Input.is_action_pressed("ui_left"):
+				$AnimatedSprite.play("CharacterLeft")
 				velocity.x -= move_speed
-			if Input.is_action_pressed("ui_right"):
+			elif Input.is_action_pressed("ui_right"):
+				$AnimatedSprite.play("CharacterRight")
 				velocity.x += move_speed
 
 		# Normalize velocity to ensure consistent speed in all directions

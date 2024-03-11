@@ -1,0 +1,184 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Assets/Jajan Simulator Nine Patch Rect GUI.png" type="Texture" id=1]
+[ext_resource path="res://Assets/NinePatch 2.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Fonts/Kenney Pixel Square.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Scripts/LevelSelectButton.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Fonts/Kenney Pixel.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="DynamicFont" id=2]
+size = 60
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 80
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 74
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 80
+font_data = ExtResource( 3 )
+
+[node name="LevelSelectButton" type="Control"]
+margin_right = 442.0
+margin_bottom = 180.0
+script = ExtResource( 4 )
+
+[node name="LevelInfo" type="NinePatchRect" parent="."]
+margin_left = -30.0
+margin_top = 200.0
+margin_right = 472.0
+margin_bottom = 952.0
+texture = ExtResource( 1 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelInfo"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -214.0
+margin_top = -249.0
+margin_right = 215.0
+margin_bottom = 269.0
+custom_constants/separation = 72
+
+[node name="TimeLimitTitle" type="Label" parent="LevelInfo/VBoxContainer"]
+margin_right = 429.0
+margin_bottom = 46.0
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Time Limit :"
+
+[node name="ObstacleTitle" type="Label" parent="LevelInfo/VBoxContainer"]
+margin_top = 118.0
+margin_right = 429.0
+margin_bottom = 164.0
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Obstacles :"
+
+[node name="RewardMultTitle" type="Label" parent="LevelInfo/VBoxContainer"]
+margin_top = 236.0
+margin_right = 429.0
+margin_bottom = 282.0
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Reward Multiplier :"
+
+[node name="ItemReqTitle" type="Label" parent="LevelInfo/VBoxContainer"]
+margin_top = 354.0
+margin_right = 429.0
+margin_bottom = 400.0
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Required Items :"
+
+[node name="ItemQtyTitle" type="Label" parent="LevelInfo/VBoxContainer"]
+margin_top = 472.0
+margin_right = 429.0
+margin_bottom = 518.0
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Item Quantity :"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="LevelInfo"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -115.0
+margin_top = -205.0
+margin_right = -14.0
+margin_bottom = 463.0
+custom_constants/separation = 56
+
+[node name="TimeLimit" type="Label" parent="LevelInfo/VBoxContainer2"]
+margin_right = 101.0
+margin_bottom = 60.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 0.933333, 0.886275, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "180"
+
+[node name="Obstacles" type="Label" parent="LevelInfo/VBoxContainer2"]
+margin_top = 116.0
+margin_right = 101.0
+margin_bottom = 176.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 0.933333, 0.886275, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "180"
+
+[node name="RewardMult" type="Label" parent="LevelInfo/VBoxContainer2"]
+margin_top = 232.0
+margin_right = 101.0
+margin_bottom = 292.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 0.933333, 0.886275, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "180"
+
+[node name="ItemReq" type="Label" parent="LevelInfo/VBoxContainer2"]
+margin_top = 348.0
+margin_right = 101.0
+margin_bottom = 408.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 0.933333, 0.886275, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "180"
+
+[node name="ItemQty" type="Label" parent="LevelInfo/VBoxContainer2"]
+margin_top = 464.0
+margin_right = 101.0
+margin_bottom = 524.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 0.933333, 0.886275, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "180"
+
+[node name="Label" type="Label" parent="LevelInfo"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -140.5
+margin_top = 30.0
+margin_right = 140.5
+margin_bottom = 87.0001
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 4 )
+text = "Level Detail"
+align = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_right = 442.0
+margin_bottom = 180.0
+texture = ExtResource( 2 )
+patch_margin_left = 60
+patch_margin_top = 60
+patch_margin_right = 60
+patch_margin_bottom = 120
+
+[node name="Label" type="Label" parent="NinePatchRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -185.0
+margin_top = -76.0
+margin_right = 185.0
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 1 )
+text = "Normal"
+
+[node name="LevelSelectButton" type="Button" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 442.0
+margin_bottom = 180.0
+
+[connection signal="pressed" from="LevelSelectButton" to="." method="_on_LevelSelectButton_pressed"]

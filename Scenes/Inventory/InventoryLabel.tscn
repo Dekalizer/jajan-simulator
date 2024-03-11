@@ -8,7 +8,7 @@ size = 140
 font_data = ExtResource( 2 )
 
 [node name="Label" type="Control"]
-margin_right = 474.0
+margin_right = 506.0
 margin_bottom = 180.0
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]

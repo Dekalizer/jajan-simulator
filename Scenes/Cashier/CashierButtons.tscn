@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Jajan Simulator Nine Patch Rect GUI.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/ContinueShoppingButton.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/CheckoutButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Cashier/ContinueShoppingButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Cashier/CheckoutButton.tscn" type="PackedScene" id=3]
 
 [node name="CashierButtons" type="Control"]
 margin_right = -393.0

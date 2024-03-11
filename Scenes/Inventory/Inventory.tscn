@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Assets/Jajan Simulator Nine Patch Rect GUI.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/ItemSlot.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/InventoryLabel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Inventory/InventoryLabel.tscn" type="PackedScene" id=3]
 
 [node name="Inventory" type="Control"]
 margin_right = 1295.0
@@ -104,6 +104,6 @@ visible = false
 [node name="Label" parent="." instance=ExtResource( 3 )]
 margin_left = 546.0
 margin_top = -30.0
-margin_right = 1020.0
+margin_right = 1054.0
 margin_bottom = 150.0
 rect_scale = Vector2( 0.4, 0.4 )

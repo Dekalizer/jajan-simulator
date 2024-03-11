@@ -2,8 +2,8 @@ extends Control
 
 onready var inventory = get_node("Inventory/GridContainer").get_children()
 onready var cashier = get_node("Cashier/GridContainer").get_children()
-onready var player = get_tree().root.get_child(0).get_node("Player")
-onready var bottom_gui = get_tree().root.get_child(0).get_node("Player/UI/BottomUI")
+onready var player = get_tree().root.get_child(1).get_node("Player")
+onready var bottom_gui = get_tree().root.get_child(1).get_node("Player/UI/BottomUI")
 
 var inventory_buffer = {}
 var cashier_buffer = {}

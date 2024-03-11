@@ -13,7 +13,7 @@ var shelf_items = {
 
 var shelf_type : String
 var player_in_range = false
-var shelf_gui_scene = preload("res://Scenes/ShelfGUI.tscn")
+var shelf_gui_scene = preload("res://Scenes/Shelf/ShelfGUI.tscn")
 onready var player = get_parent().get_node("Player")
 onready var gui = get_parent().get_node("ShelfGUI")
 

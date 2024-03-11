@@ -1,6 +1,5 @@
 extends Control
 
-onready var inv = preload()
 var is_open = false
 
 func _ready():

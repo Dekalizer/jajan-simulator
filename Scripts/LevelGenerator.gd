@@ -20,7 +20,7 @@ onready var shelf_top : TileMap = get_node(SHELF_TOP)
 onready var shelf_bot : TileMap = get_node(SHELF_BOT)
 onready var obstacle : TileMap = get_node(OBSTACLES)
 
-onready var shelf_scene = preload("res://Scenes/Shelf.tscn")
+onready var shelf_scene = preload("res://Scenes/Shelf/Shelf.tscn")
 
 export var SHELF_TOP = "ObjTopPart"
 export var SHELF_BOT = "ObjBottomPart"
@@ -31,21 +31,90 @@ export var OBSTACLES = "Obstacle"
 export var SHELF_COORD = [[2,10], [6,12], [12,8], [2,8], [10,4], [2,2], [10,2]] 
 export var SHELF_RANGE = 5
 export var OBSTACLE_COORD = [[5,4],[9,4],[15,5],[17,4],[3,5],[11,7],[1,8],[17,8],[1,10],[9,10]]
-export var OBSTACLE_COUNT = 3
+
 
 onready var shelf_gui = get_node("ShelfGUI")
 onready var player = get_node("Player")
+onready var required_item_slots = get_node("Player/UI/ItemList/NinePatchRect/GridContainer").get_children()
+
+var start_time = 0
+var is_timer_running = false
+var time_limit = 0
+var required_item_types
+var required_item_qty
+var required_items = {}
+var reward_multiplier
+var obstacle_count
+
+# Difficulty goes from 1 - 5.
+# 1 = 2 obstacles are enabled, time limit is 180 seconds
+# 2 = 4 obstacles are enabled, time limit is 150 seconds
+# 3 = 6 obstacles are enabled, time limit is 120 seconds
+# 4 = 8 obstacles are enabled, time limit is 90 seconds
+# 5 = 10 obstacles are enabled, time limit is 60 seconds
+var difficulty = global.difficulty
 
 func _ready():
+	set_difficulty()
+	set_required_items()
 	randomize_section()
 	place_shelf()
-	if OBSTACLE_COUNT > 1:
-		if OBSTACLE_COUNT > OBSTACLE_COORD.size():
-			OBSTACLE_COUNT = OBSTACLE_COORD.size()
+	if obstacle_count > 1:
+		if obstacle_count > OBSTACLE_COORD.size():
+			obstacle_count = OBSTACLE_COORD.size()
 		place_obstacle()
+	start_time = OS.get_ticks_msec()
+	update_item_list()
 
 func _process(delta):
 	shelf_gui.rect_position = player.position - Vector2(269/2, 223/2)
+
+func set_required_items():
+	var item_properties = global.item_properties
+	var required_items = {}
+	
+	# Randomly select required_item_types amount of items
+	var item_types = item_properties.keys()
+	item_types.shuffle()
+	print(item_types)
+	for i in range(required_item_types):
+		required_items[item_types[i]] = required_item_qty[0] + randi() % (required_item_qty[1] - required_item_qty[0] + 1)
+	
+	
+	self.required_items = required_items
+	
+func set_difficulty():
+	match global.difficulty:
+		1:
+			obstacle_count = 2
+			time_limit = 180
+			reward_multiplier = 1.0
+			required_item_types = 5
+			required_item_qty = [1, 3]  # Range from 1 to 3
+		2:
+			obstacle_count = 4
+			time_limit = 150
+			reward_multiplier = 1.2
+			required_item_types = 6
+			required_item_qty = [2, 4]  # Range from 2 to 4
+		3:
+			obstacle_count = 6
+			time_limit = 120
+			reward_multiplier = 1.4
+			required_item_types = 8
+			required_item_qty = [3, 5]  # Range from 3 to 5
+		4:
+			obstacle_count = 8
+			time_limit = 90
+			reward_multiplier = 1.6
+			required_item_types = 10
+			required_item_qty = [4, 6]  # Range from 4 to 6
+		5:
+			obstacle_count = 10
+			time_limit = 60
+			reward_multiplier = 2.0
+			required_item_types = 12
+			required_item_qty = [5, 7]  # Range from 5 to 7
 
 func randomize_section():
 	randomize()
@@ -59,7 +128,7 @@ func randomize_section():
 func randomize_obstacle():
 	OBSTACLE_COORD.shuffle()
 	var randomized_obstacle = []
-	for i in range(0, OBSTACLE_COUNT):
+	for i in range(0, obstacle_count):
 		randomized_obstacle.append(OBSTACLE_COORD[i])
 	return randomized_obstacle
 
@@ -120,6 +189,60 @@ func place_obstacle():
 	for i in range(generated_obstacle.size()):
 		obstacle.set_cell(generated_obstacle[i][0], generated_obstacle[i][1], tile_obstacle[randi() % tile_obstacle.size() ])
 
+func update_item_list():
+	for i in range(required_items.size()):
+		required_item_slots[i].get_node("CenterContainer/ItemImg").texture = load("res://Assets/Item Images/" + required_items.keys()[i] + ".png")
+		required_item_slots[i].get_node("ItemQty").text = str(required_items.values()[i])
+		required_item_slots[i].visible = true
+
+func finish_level():
+	var reward = evaluate_performance()
+	print("congrats, you got: " + str(reward))
+
+func evaluate_time():
+	var reward = 0
+	
+	var time_taken = (OS.get_ticks_msec() - start_time) / 1000.0  # Convert milliseconds to seconds
+	var time_remaining = time_limit - time_taken
+	
+	if time_remaining >= 0:
+		# Calculate the reward based on the time saved
+		reward = time_remaining / time_limit * 100
+	
+	return int(reward)
+
+func evaluate_items():
+	var penalties = 0
+	var inventory = player.get_cart()
+	var required_qty
+
+	# Penalize for not enough/too much items
+	for i in range(required_items.size()):
+		if inventory.has(required_items.keys()[i]):
+			# Check if the player has enough/too much of the required item
+			required_qty = required_items.values()[i]
+			var qty = inventory[required_items.keys()[i]]
+			penalties -= abs(required_qty - qty)
+		else:
+			# Handle when player doesnt have the required item at all
+			penalties -= required_items.values()[i]
+
+	# Penalize for extra items
+	for item in inventory.keys():
+		if !required_items.has(item):
+			penalties -= inventory[item]
+
+	return penalties * 10
+
+func evaluate_performance():
+	var penalties = 0
+	penalties += evaluate_items()
+	if !(penalties < 0):
+		print("reward from item: " + str(penalties))
+		penalties += evaluate_time()
+		print("reward from time: " + str(penalties))
+	
+	return penalties 
 
 func _on_Button_pressed():
 	get_tree().change_scene("res://Scenes/MainLevel.tscn")
