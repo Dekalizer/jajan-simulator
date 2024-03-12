@@ -1,6 +1,23 @@
 extends Node
 
 var difficulty
+var player_coins = 0
+
+# "StatGroup":{Level:0 = Haven't bought 1 = Bought}
+var player_bought_stats = {
+	"Agility":{1:0, 2:0, 3:0}, 
+	"Strength":{1:0, 2:0, 3:0},
+	"Stamina":{1:0, 2:0, 3:0}
+	}
+
+var level_stats = {0:[0,0], 1:[20,1000], 2:[35,2000], 3:[50,3000]}
+
+var last_game_req_item = {}
+var last_game_cashier_item = {}
+var last_game_start_time = 0
+var last_game_time_limit = 0
+var last_game_reward_mult = 0
+var last_game_end_time = 0
 
 # item properties with the format = "Item Name": [price, weight, tile_number]
 var item_properties = {
@@ -26,14 +43,3 @@ var item_properties = {
 	"Meatball": [150, 18],
 	"Sausage": [300, 19]
 }
-
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

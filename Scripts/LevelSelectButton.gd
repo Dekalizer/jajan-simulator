@@ -20,7 +20,7 @@ func set_difficulty():
 			obstacle_count = 2
 			time_limit = 180
 			reward_multiplier = 0.5
-			required_item_types = 5
+			required_item_types = 4
 			required_item_qty = [1, 3]  # Range from 1 to 3
 		2:
 			obstacle_count = 4
@@ -59,5 +59,6 @@ func update_level_info_display():
 func _on_LevelSelectButton_pressed():
 	update_level_info_display()
 	level_selection_menu.close_other_level_detail()
+	level_selection_menu.close_other_selection()
 	level_selection_menu.set_difficulty(difficulty)
 	$LevelInfo.visible = true

@@ -1,31 +1,9 @@
 extends KinematicBody2D
 
-var item_properties = {
-	"Noodle": [85, 12],
-	"Corned Beef": [340, 13],
-	"Bread": [370, 14],
-	"Milk": [1000, 0],
-	"Water": [600, 1],
-	"Soda": [250, 2],
-	"Carrot": [300, 6],
-	"Onion": [280, 7],
-	"Broccoli": [250, 8],
-	"Apple": [200, 3],
-	"Orange": [150, 4],
-	"Banana": [100, 5],
-	"Bucket": [400, 9],
-	"Broom": [400, 10],
-	"Mop": [500, 11],
-	"Beef": [500, 21],
-	"Chicken": [300, 16],
-	"Fish": [400, 22],
-	"Nugget": [250, 17],
-	"Meatball": [150, 18],
-	"Sausage": [300, 19]
-}
+var item_properties = global.item_properties
 
 # Player properties
-export var DEFAULT_MOVE_SPEED = 150
+export var DEFAULT_MOVE_SPEED = 150.0
 export var SPRINT_SPEED_MULTIPLIER = 1.5
 export var MAX_STAMINA = 100.0
 export var STAMINA_REGEN_RATE = 20  # Amount of stamina regenerated per second
@@ -44,6 +22,7 @@ var sprint_speed = move_speed * SPRINT_SPEED_MULTIPLIER
 var cart = {}
 var weight = 0
 var default_animation_speed = 2
+var stamina_can_decrease = true
 
 onready var weight_bar = get_node("UI/BottomUI/WeightBar")
 onready var stamina_bar = get_node("UI/BottomUI/StaminaBar")
@@ -55,28 +34,6 @@ onready var inv_slots = get_parent().get_node("Player/UI/Inventory/NinePatchRect
 
 # The inventory that displays when on Cashier
 onready var inv_2_slots = get_parent().get_node("Player/UI/CashierGUI/Inventory/GridContainer").get_children()
-
-
-func _ready():
-	last_movement_direction = Vector2.ZERO
-
-func _process(delta):
-	update_bars()
-	
-	if Input.is_action_pressed("look_at_inventory") and !gui_opened:
-		$UI/Inventory.visible = true
-	else:
-		$UI/Inventory.visible = false
-	
-		# Determine last movement direction
-	if velocity.x > 0:
-		last_movement_direction = Vector2.RIGHT
-	elif velocity.x < 0:
-		last_movement_direction = Vector2.LEFT
-	elif velocity.y > 0:
-		last_movement_direction = Vector2.DOWN
-	elif velocity.y < 0:
-		last_movement_direction = Vector2.UP
 
 func get_weight():
 	return self.weight
@@ -95,6 +52,46 @@ func get_gui_opened():
 
 func set_gui_opened(val):
 	self.gui_opened = val
+
+func _ready():
+	last_movement_direction = Vector2.ZERO
+	apply_upgrades()
+
+func _process(delta):
+	update_bars()
+	
+		# Determine last movement direction
+	if velocity.x > 0:
+		last_movement_direction = Vector2.RIGHT
+	elif velocity.x < 0:
+		last_movement_direction = Vector2.LEFT
+	elif velocity.y > 0:
+		last_movement_direction = Vector2.DOWN
+	elif velocity.y < 0:
+		last_movement_direction = Vector2.UP
+
+func apply_upgrades():
+	var highest_levels = {}
+	var upgrades_bought = global.player_bought_stats
+	var level_stats = global.level_stats
+	
+	# Taking the highest level of the purchased upgrades
+	# Iterate over each stat
+	for stat in upgrades_bought.keys():
+		var highest_level = 0
+		
+		# Iterate over each level bought for the current stat
+		for level in upgrades_bought[stat].keys():
+			# Check if the level bought is greater than the current highest level
+			if upgrades_bought[stat][level] == 1 and level > highest_level:
+				highest_level = level
+		
+		# Add the highest level to the new dictionary
+		highest_levels[stat] = highest_level
+	
+	DEFAULT_MOVE_SPEED = (1 + level_stats[highest_levels["Agility"]][0]/100.0) * DEFAULT_MOVE_SPEED
+	MAX_WEIGHT = (1 + level_stats[highest_levels["Strength"]][0]/100.0) * MAX_WEIGHT
+	MAX_STAMINA = (1 + level_stats[highest_levels["Stamina"]][0]/100.0) * MAX_STAMINA
 
 func update_weight():
 	var cart = self.cart
@@ -211,7 +208,7 @@ func _physics_process(delta):
 		move_and_slide(velocity)
 
 		# Update stamina
-		if sprinting:
+		if sprinting and stamina_can_decrease:
 			stamina -= delta * 50  # Decrease stamina while sprinting
 			if stamina <= 0:
 				stamina = 0

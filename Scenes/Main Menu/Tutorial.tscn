@@ -1,0 +1,4 @@
+[gd_scene format=2]
+
+[node name="Tutorial" type="Control"]
+rect_pivot_offset = Vector2( -376, -518 )

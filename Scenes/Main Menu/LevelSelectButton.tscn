@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Jajan Simulator Nine Patch Rect GUI.png" type="Texture" id=1]
 [ext_resource path="res://Assets/NinePatch 2.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Fonts/Kenney Pixel Square.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Scripts/LevelSelectButton.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Fonts/Kenney Pixel.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Assets/SelectItem.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=2]
 size = 60
@@ -26,6 +27,18 @@ font_data = ExtResource( 3 )
 margin_right = 442.0
 margin_bottom = 180.0
 script = ExtResource( 4 )
+
+[node name="SelectItem" type="NinePatchRect" parent="."]
+margin_left = -14.0
+margin_top = -13.0
+margin_right = 143.0
+margin_bottom = 56.0
+rect_scale = Vector2( 3, 3 )
+texture = ExtResource( 6 )
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
 
 [node name="LevelInfo" type="NinePatchRect" parent="."]
 margin_left = -30.0

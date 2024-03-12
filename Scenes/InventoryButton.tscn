@@ -2,13 +2,13 @@
 
 [ext_resource path="res://Assets/NinePatch3.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Fonts/Kenney Pixel.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Scripts/ItemListButton.gd" type="Script" id=3]
+[ext_resource path="res://InventoryButton.gd" type="Script" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 140
 font_data = ExtResource( 2 )
 
-[node name="ItemListButton" type="Control"]
+[node name="InventoryButton" type="Control"]
 script = ExtResource( 3 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
@@ -32,11 +32,11 @@ margin_bottom = 39.0
 grow_horizontal = 2
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 1 )
-text = "Item  List"
+text = "Inventory"
 
 [node name="Button" type="Button" parent="."]
 self_modulate = Color( 1, 1, 1, 0 )
-margin_right = 508.0
+margin_right = 519.0
 margin_bottom = 180.0
 rect_min_size = Vector2( 508, 180 )
 

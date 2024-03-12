@@ -9,17 +9,17 @@ var reward_multiplier
 var required_item_types
 var required_item_qty
 
-signal start_game(difficulty, obstacle_count, time_limit, reward_multiplier, required_item_types, required_item_qty)
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	close_other_level_detail()
+	close_other_selection()
 	# Set the level's difficulty for each level selection button
 	for i in range(level_buttons.size()):
 		level_buttons[i].difficulty = i+1
 
 func set_difficulty(diff):
 	difficulty = diff
+	level_buttons[diff-1].get_node("SelectItem").visible = true
 	match diff:
 		1:
 			obstacle_count = 2
@@ -56,8 +56,14 @@ func close_other_level_detail():
 	for level in level_buttons:
 		level.get_node("LevelInfo").visible = false
 
+func close_other_selection():
+	for level in level_buttons:
+		level.get_node("SelectItem").visible = false
+
 func _on_StartGameButton_pressed():
 	if !difficulty == null:
 		global.difficulty = self.difficulty
 		get_tree().change_scene("res://Scenes/MainLevel.tscn")
-	
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://Scenes/Main Menu/MainMenu.tscn")

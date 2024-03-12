@@ -30,15 +30,21 @@ export var OBSTACLES = "Obstacle"
 # order is White, White, White, Black, Black, Freeze, Freeze
 export var SHELF_COORD = [[2,10], [6,12], [12,8], [2,8], [10,4], [2,2], [10,2]] 
 export var SHELF_RANGE = 5
-export var OBSTACLE_COORD = [[5,4],[9,4],[15,5],[17,4],[3,5],[11,7],[1,8],[17,8],[1,10],[9,10]]
+export var OBSTACLE_COORD = [[7,4],[9,4],[15,5],[17,4],[3,5],[11,7],[1,8],[17,8],[1,10],[9,10]]
 
 
 onready var shelf_gui = get_node("ShelfGUI")
 onready var player = get_node("Player")
+onready var cashier = get_node("Player/UI/CashierGUI")
 onready var required_item_slots = get_node("Player/UI/ItemList/NinePatchRect/GridContainer").get_children()
+
+onready var pause_menu = get_node("Player/UI/PauseMenu")
+var paused = false
+var pause_start_time = 0
 
 var start_time = 0
 var is_timer_running = false
+var elapsed_time = 0
 var time_limit = 0
 var required_item_types
 var required_item_qty
@@ -65,13 +71,45 @@ func _ready():
 		place_obstacle()
 	start_time = OS.get_ticks_msec()
 	update_item_list()
+	is_timer_running = true
 
 func _process(delta):
 	shelf_gui.rect_position = player.position - Vector2(269/2, 223/2)
+	if is_timer_running and !paused:
+		var current_time = OS.get_ticks_msec()
+		elapsed_time = (current_time - start_time) / 1000.0
+		$Player/UI/BottomUI/TimeBar.set_value(100 * (1 - elapsed_time / time_limit))
+		$Player/UI/BottomUI/TimerCount.text = str(int(time_limit - elapsed_time))
+		if elapsed_time >= time_limit:
+			finish_level()
+
+	if Input.is_action_pressed("pause") and !paused:
+		pause_game()
+
+func pause_game():
+	pause_menu.visible = true
+	Engine.time_scale = 0
+	paused = true
+	pause_start_time = OS.get_ticks_msec()
+
+	# Pause the game logic
+	is_timer_running = false
+
+func resume_game():
+	paused = false
+	
+	# Calculate the time the game was paused
+	var pause_duration = OS.get_ticks_msec() - pause_start_time
+	# Adjust the start time of the timer
+	start_time += pause_duration
+
+	# Resume the game logic
+	is_timer_running = true
 
 func set_required_items():
 	var item_properties = global.item_properties
 	var required_items = {}
+	randomize()
 	
 	# Randomly select required_item_types amount of items
 	var item_types = item_properties.keys()
@@ -80,6 +118,7 @@ func set_required_items():
 	for i in range(required_item_types):
 		required_items[item_types[i]] = required_item_qty[0] + randi() % (required_item_qty[1] - required_item_qty[0] + 1)
 	
+	print("required items: " + str(required_items))
 	
 	self.required_items = required_items
 	
@@ -88,31 +127,31 @@ func set_difficulty():
 		1:
 			obstacle_count = 2
 			time_limit = 180
-			reward_multiplier = 1.0
-			required_item_types = 5
+			reward_multiplier = 0.5
+			required_item_types = 4
 			required_item_qty = [1, 3]  # Range from 1 to 3
 		2:
 			obstacle_count = 4
 			time_limit = 150
-			reward_multiplier = 1.2
+			reward_multiplier = 1.0
 			required_item_types = 6
 			required_item_qty = [2, 4]  # Range from 2 to 4
 		3:
 			obstacle_count = 6
 			time_limit = 120
-			reward_multiplier = 1.4
+			reward_multiplier = 1.5
 			required_item_types = 8
 			required_item_qty = [3, 5]  # Range from 3 to 5
 		4:
 			obstacle_count = 8
 			time_limit = 90
-			reward_multiplier = 1.6
+			reward_multiplier = 2.0
 			required_item_types = 10
 			required_item_qty = [4, 6]  # Range from 4 to 6
 		5:
 			obstacle_count = 10
 			time_limit = 60
-			reward_multiplier = 2.0
+			reward_multiplier = 2.5
 			required_item_types = 12
 			required_item_qty = [5, 7]  # Range from 5 to 7
 
@@ -196,53 +235,36 @@ func update_item_list():
 		required_item_slots[i].visible = true
 
 func finish_level():
-	var reward = evaluate_performance()
-	print("congrats, you got: " + str(reward))
-
-func evaluate_time():
-	var reward = 0
+	global.last_game_cashier_item = cashier.cashier_items
+	global.last_game_req_item = required_items
+	global.last_game_start_time = self.start_time
+	global.last_game_time_limit = self.time_limit
+	global.last_game_reward_mult = self.reward_multiplier
+	global.last_game_end_time = OS.get_ticks_msec()
+	get_tree().change_scene("res://Scenes/Main Menu/GameEndMenu.tscn")
+	queue_free()
 	
-	var time_taken = (OS.get_ticks_msec() - start_time) / 1000.0  # Convert milliseconds to seconds
-	var time_remaining = time_limit - time_taken
-	
-	if time_remaining >= 0:
-		# Calculate the reward based on the time saved
-		reward = time_remaining / time_limit * 100
-	
-	return int(reward)
 
-func evaluate_items():
-	var penalties = 0
-	var inventory = player.get_cart()
-	var required_qty
+func start_stamina_timer():
+	var timer = Timer.new()
+	timer.wait_time = 5.0  
+	timer.one_shot = true 
+	timer.connect("timeout", self, "_reset_stamina")  
+	add_child(timer)
+	timer.start()
 
-	# Penalize for not enough/too much items
-	for i in range(required_items.size()):
-		if inventory.has(required_items.keys()[i]):
-			# Check if the player has enough/too much of the required item
-			required_qty = required_items.values()[i]
-			var qty = inventory[required_items.keys()[i]]
-			penalties -= abs(required_qty - qty)
-		else:
-			# Handle when player doesnt have the required item at all
-			penalties -= required_items.values()[i]
+func _reset_stamina():
+	$Player.STAMINA_REGEN_RATE = 20  # Restore normal stamina regeneration rate
+	$Player.stamina_can_decrease = true
 
-	# Penalize for extra items
-	for item in inventory.keys():
-		if !required_items.has(item):
-			penalties -= inventory[item]
+func _on_CollectibleStamina_body_entered(body):
+	if body.name == "Player":
+		body.STAMINA_REGEN_RATE = 1000
+		body.stamina_can_decrease = false
+		start_stamina_timer()
+		$CollectibleStamina.queue_free()
 
-	return penalties * 10
-
-func evaluate_performance():
-	var penalties = 0
-	penalties += evaluate_items()
-	if !(penalties < 0):
-		print("reward from item: " + str(penalties))
-		penalties += evaluate_time()
-		print("reward from time: " + str(penalties))
-	
-	return penalties 
-
-func _on_Button_pressed():
-	get_tree().change_scene("res://Scenes/MainLevel.tscn")
+func _on_CollectibleTimer_body_entered(body):
+	if body.name == "Player":
+		start_time += 20000
+		$CollectibleTimer.queue_free()
