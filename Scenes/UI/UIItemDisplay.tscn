@@ -1,0 +1,145 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Jajan Simulator Inv Slot.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Item Images/Strength.png" type="Texture" id=2]
+[ext_resource path="res://Assets/circle.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Fonts/Kenney Pixel Square.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Control
+
+var type
+var level
+var item_info
+var level_stats = global.level_stats
+onready var collectible_info_display = get_parent().get_parent().get_node(\"CollectiblesInfo\")
+onready var upgrade_info_display = get_parent().get_parent().get_node(\"UpgradedStatsInfo\")
+
+func _ready():
+	update_display()
+	update_info()
+
+func update_display():
+	# change image
+	var item_img = get_node(\"ItemDisplay/ItemImg\")
+	if type != null:
+		if type == \"StaminaItem\" or type == \"Timer\":
+			item_img.texture = load(\"res://Assets/\" + type + \".png\")
+			item_img.visible = true
+		
+		elif type == \"Agility\" or type == \"Stamina\" or type == \"Strength\":
+			item_img.texture = load(\"res://Assets/Item Images/\" + type + \".png\")
+			item_img.visible = true
+			$ItemDisplay/Circle.visible = true
+			$ItemDisplay/Label.visible = true
+			$ItemDisplay/Label.text = roman(level)
+
+func update_info():
+	if type == \"StaminaItem\" or type == \"Timer\":
+		var info = collectible_info_display.get_node(\"NinePatchRect\").get_children()
+		var info_title = info[0]
+		var info_label = info[1]
+		
+		if type == \"StaminaItem\":
+			info_title.text = \"Infinite Stamina\"
+			info_label.text = \"You got infinite stamina for 10 seconds!\"
+		
+		elif type == \"Timer\":
+			info_title.text = \"Extra Time\"
+			info_label.text = \"You got an extra 20 seconds of time!\"
+		
+	elif type == \"Agility\" or type == \"Stamina\" or type == \"Strength\":
+		print(type)
+		var info = upgrade_info_display.get_node(\"NinePatchRect\").get_children()
+		var info_title = info[0]
+		var info_label = info[1]
+		
+		info_title.text = type + \" \" + roman(level)
+		print(info_title.text)
+		match type:
+			\"Agility\":
+				info_label.text = \"Your move speed is increased by \" + str(level_stats[level][0]) + \"% !\"
+			\"Strength\":
+				info_label.text = \"Your max carry weight is increased by \" + str(level_stats[level][0]) + \"% !\"
+			\"Stamina\":
+				info_label.text = \"Your max stamina is increased by \" + str(level_stats[level][0]) + \"% !\"
+		
+
+func roman(level):
+	var level_text
+	match level:
+		1:
+			level_text = \"I\"
+		2:
+			level_text = \"II\"
+		3:
+			level_text = \"III\"
+	
+	return level_text
+
+
+func _on_ItemDisplayHover_mouse_entered():
+	update_info()
+	if type == \"StaminaItem\" or type == \"Timer\":
+		collectible_info_display.visible = true
+	
+	elif type == \"Agility\" or type == \"Stamina\" or type == \"Strength\":
+		upgrade_info_display.visible = true
+	
+func _on_ItemDisplayHover_mouse_exited():
+	if type == \"StaminaItem\" or type == \"Timer\":
+		collectible_info_display.visible = false
+	
+	elif type == \"Agility\" or type == \"Stamina\" or type == \"Strength\":
+		upgrade_info_display.visible = false
+"
+
+[sub_resource type="DynamicFont" id=1]
+size = 27
+font_data = ExtResource( 4 )
+
+[node name="UIItemDisplay" type="Control"]
+margin_right = 202.0
+margin_bottom = 201.0
+script = SubResource( 2 )
+
+[node name="ItemDisplay" type="NinePatchRect" parent="."]
+margin_right = 202.0
+margin_bottom = 202.0
+texture = ExtResource( 1 )
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="ItemImg" type="Sprite" parent="ItemDisplay"]
+visible = false
+position = Vector2( 101, 101 )
+scale = Vector2( 1.0125, 1.0125 )
+texture = ExtResource( 2 )
+
+[node name="Circle" type="Sprite" parent="ItemDisplay"]
+visible = false
+position = Vector2( 186, 186 )
+scale = Vector2( 0.28125, 0.28125 )
+texture = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="ItemDisplay"]
+visible = false
+margin_left = 162.0
+margin_top = 164.0
+margin_right = 213.0
+margin_bottom = 205.0
+custom_fonts/font = SubResource( 1 )
+text = "III"
+align = 1
+
+[node name="ItemDisplayHover" type="Button" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 212.0
+margin_bottom = 212.0
+
+[connection signal="mouse_entered" from="ItemDisplayHover" to="." method="_on_ItemDisplayHover_mouse_entered"]
+[connection signal="mouse_exited" from="ItemDisplayHover" to="." method="_on_ItemDisplayHover_mouse_exited"]

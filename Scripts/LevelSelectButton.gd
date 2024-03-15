@@ -57,6 +57,7 @@ func update_level_info_display():
 
 
 func _on_LevelSelectButton_pressed():
+	menu_bgm.click()
 	update_level_info_display()
 	level_selection_menu.close_other_level_detail()
 	level_selection_menu.close_other_selection()

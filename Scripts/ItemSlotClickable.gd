@@ -1,6 +1,6 @@
 extends Panel
 
-onready var cashier_gui = get_tree().root.get_child(1).get_node("Player/UI/CashierGUI")
+onready var cashier_gui = get_tree().root.get_child(2).get_node("Player/UI/CashierGUI")
 
 var inventory_buffer = {}
 var cashier_buffer = {}
@@ -9,6 +9,7 @@ var qty = 0
 var type
 
 func _on_Button_pressed():
+	menu_bgm.click()
 	inventory_buffer = cashier_gui.inventory_buffer
 	cashier_buffer = cashier_gui.cashier_buffer
 	print("pressed: " + item_name)

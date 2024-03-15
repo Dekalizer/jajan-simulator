@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Assets/JajanSimulatorEnvTiles.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -19,8 +19,17 @@
 [ext_resource path="res://Scenes/Main Menu/PauseMenu.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Scenes/Collectible.tscn" type="PackedScene" id=18]
 [ext_resource path="res://Assets/Timer.png" type="Texture" id=19]
+[ext_resource path="res://Scenes/UI/UIItemDisplay.tscn" type="PackedScene" id=20]
+[ext_resource path="res://Scenes/UI/UIItemInfo.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Assets/sound/Mana Refill 👾 (16-Bit Arcade No Copyright Music).wav" type="AudioStream" id=22]
+[ext_resource path="res://Assets/sound/Supermarket, grocery store ambient sound in Budapest. Royalty free sound effects..wav" type="AudioStream" id=23]
+[ext_resource path="res://Assets/Character/cashier.png" type="Texture" id=24]
 
 [sub_resource type="DynamicFont" id=1]
+size = 8
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=2]
 size = 8
 font_data = ExtResource( 8 )
 
@@ -52,7 +61,7 @@ position = Vector2( 73, 232 )
 [node name="CollectibleTimer" parent="." instance=ExtResource( 18 )]
 position = Vector2( 839, 169 )
 
-[node name="ItemImg" parent="CollectibleTimer" index="0"]
+[node name="ItemImg" parent="CollectibleTimer" index="1"]
 texture = ExtResource( 19 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
@@ -199,6 +208,77 @@ margin_bottom = 177.0
 custom_fonts/font = SubResource( 1 )
 text = "0 / 3000"
 
+[node name="UpgradedStatsLabel" type="Label" parent="Player/UI/BottomUI"]
+margin_left = 164.0
+margin_top = 134.0
+margin_right = 270.0
+margin_bottom = 144.0
+custom_fonts/font = SubResource( 2 )
+text = "Upgraded Stats:"
+
+[node name="UpgradedStatsInfo" parent="Player/UI/BottomUI" instance=ExtResource( 21 )]
+visible = false
+margin_left = 155.0
+margin_top = 78.0
+margin_right = 155.0
+margin_bottom = 78.0
+rect_scale = Vector2( 0.4, 0.4 )
+
+[node name="UpgradedStats" type="HBoxContainer" parent="Player/UI/BottomUI"]
+margin_left = 169.0
+margin_top = 146.0
+margin_right = 669.0
+margin_bottom = 186.0
+rect_scale = Vector2( 0.15, 0.15 )
+custom_constants/separation = 250
+
+[node name="UpgradeDisplay" parent="Player/UI/BottomUI/UpgradedStats" instance=ExtResource( 20 )]
+margin_right = 0.0
+margin_bottom = 40.0
+
+[node name="UpgradeDisplay2" parent="Player/UI/BottomUI/UpgradedStats" instance=ExtResource( 20 )]
+margin_left = 250.0
+margin_right = 250.0
+margin_bottom = 40.0
+
+[node name="UpgradeDisplay3" parent="Player/UI/BottomUI/UpgradedStats" instance=ExtResource( 20 )]
+margin_left = 500.0
+margin_right = 500.0
+margin_bottom = 40.0
+
+[node name="CollectiblesLabel" type="Label" parent="Player/UI/BottomUI"]
+margin_left = 59.0
+margin_top = 134.0
+margin_right = 165.0
+margin_bottom = 144.0
+custom_fonts/font = SubResource( 2 )
+text = "Collectibles:"
+
+[node name="CollectiblesInfo" parent="Player/UI/BottomUI" instance=ExtResource( 21 )]
+visible = false
+margin_left = 30.0
+margin_top = 78.0
+margin_right = 30.0
+margin_bottom = 78.0
+rect_scale = Vector2( 0.4, 0.4 )
+
+[node name="Collectibles" type="HBoxContainer" parent="Player/UI/BottomUI"]
+margin_left = 64.0
+margin_top = 146.0
+margin_right = 564.0
+margin_bottom = 186.0
+rect_scale = Vector2( 0.15, 0.15 )
+custom_constants/separation = 250
+
+[node name="CollectiblesDisplay" parent="Player/UI/BottomUI/Collectibles" instance=ExtResource( 20 )]
+margin_right = 0.0
+margin_bottom = 40.0
+
+[node name="CollectiblesDisplay2" parent="Player/UI/BottomUI/Collectibles" instance=ExtResource( 20 )]
+margin_left = 250.0
+margin_right = 250.0
+margin_bottom = 40.0
+
 [node name="PauseMenu" parent="Player/UI" instance=ExtResource( 17 )]
 visible = false
 anchor_left = 0.5
@@ -210,6 +290,16 @@ margin_top = -51.0
 margin_right = -55.0
 margin_bottom = -51.0
 rect_scale = Vector2( 0.2, 0.2 )
+
+[node name="BGM" type="AudioStreamPlayer2D" parent="Player"]
+stream = ExtResource( 22 )
+volume_db = -20.0
+autoplay = true
+
+[node name="CrowdNoise" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource( 23 )
+volume_db = -25.0
+autoplay = true
 
 [node name="ObjTopPart" parent="." instance=ExtResource( 3 )]
 tile_set = ExtResource( 1 )
@@ -235,6 +325,21 @@ margin_left = 425.0
 margin_top = 272.0
 margin_right = 494.0
 margin_bottom = 298.0
+
+[node name="Cashier2" type="Sprite" parent="."]
+position = Vector2( 620, 713 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 24 )
+
+[node name="Cashier3" type="Sprite" parent="."]
+position = Vector2( 717, 713 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 24 )
+
+[node name="Cashier4" type="Sprite" parent="."]
+position = Vector2( 813, 714 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 24 )
 
 [connection signal="body_entered" from="CollectibleStamina" to="." method="_on_CollectibleStamina_body_entered"]
 [connection signal="body_entered" from="CollectibleTimer" to="." method="_on_CollectibleTimer_body_entered"]

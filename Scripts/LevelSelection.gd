@@ -61,9 +61,11 @@ func close_other_selection():
 		level.get_node("SelectItem").visible = false
 
 func _on_StartGameButton_pressed():
+	menu_bgm.click()
 	if !difficulty == null:
 		global.difficulty = self.difficulty
 		get_tree().change_scene("res://Scenes/MainLevel.tscn")
 
 func _on_BackButton_pressed():
+	menu_bgm.click()
 	get_tree().change_scene("res://Scenes/Main Menu/MainMenu.tscn")

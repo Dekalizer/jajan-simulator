@@ -37,6 +37,10 @@ onready var shelf_gui = get_node("ShelfGUI")
 onready var player = get_node("Player")
 onready var cashier = get_node("Player/UI/CashierGUI")
 onready var required_item_slots = get_node("Player/UI/ItemList/NinePatchRect/GridContainer").get_children()
+onready var upgraded_stats = get_node("Player/UI/BottomUI/UpgradedStats").get_children()
+onready var collectibles = get_node("Player/UI/BottomUI/Collectibles").get_children()
+onready var upgraded_stats_info = get_node("Player/UI/BottomUI/UpgradedStatsInfo/NinePatchRect").get_children()
+onready var collectibles_info = get_node("Player/UI/BottomUI/CollectiblesInfo/NinePatchRect").get_children()
 
 onready var pause_menu = get_node("Player/UI/PauseMenu")
 var paused = false
@@ -51,6 +55,7 @@ var required_item_qty
 var required_items = {}
 var reward_multiplier
 var obstacle_count
+var collected_collectible = []
 
 # Difficulty goes from 1 - 5.
 # 1 = 2 obstacles are enabled, time limit is 180 seconds
@@ -61,10 +66,12 @@ var obstacle_count
 var difficulty = global.difficulty
 
 func _ready():
+	menu_bgm.stop_music()
 	set_difficulty()
 	set_required_items()
 	randomize_section()
 	place_shelf()
+	update_upgrade_display()
 	if obstacle_count > 1:
 		if obstacle_count > OBSTACLE_COORD.size():
 			obstacle_count = OBSTACLE_COORD.size()
@@ -228,6 +235,20 @@ func place_obstacle():
 	for i in range(generated_obstacle.size()):
 		obstacle.set_cell(generated_obstacle[i][0], generated_obstacle[i][1], tile_obstacle[randi() % tile_obstacle.size() ])
 
+func update_collectible_display():
+	for i in range(collected_collectible.size()):
+		collectibles[i].type = collected_collectible[i]
+		collectibles[i].update_display()
+
+func update_upgrade_display():
+	print(player.applied_upgrades)
+	for i in range(player.applied_upgrades.size()):
+		if player.applied_upgrades.values()[i] == 0:
+			continue
+		upgraded_stats[i].type = player.applied_upgrades.keys()[i]
+		upgraded_stats[i].level = player.applied_upgrades.values()[i]
+		upgraded_stats[i].update_display()
+
 func update_item_list():
 	for i in range(required_items.size()):
 		required_item_slots[i].get_node("CenterContainer/ItemImg").texture = load("res://Assets/Item Images/" + required_items.keys()[i] + ".png")
@@ -244,10 +265,9 @@ func finish_level():
 	get_tree().change_scene("res://Scenes/Main Menu/GameEndMenu.tscn")
 	queue_free()
 	
-
 func start_stamina_timer():
 	var timer = Timer.new()
-	timer.wait_time = 5.0  
+	timer.wait_time = 10.0  
 	timer.one_shot = true 
 	timer.connect("timeout", self, "_reset_stamina")  
 	add_child(timer)
@@ -261,10 +281,18 @@ func _on_CollectibleStamina_body_entered(body):
 	if body.name == "Player":
 		body.STAMINA_REGEN_RATE = 1000
 		body.stamina_can_decrease = false
+		collected_collectible.append("StaminaItem")
+		update_collectible_display()
 		start_stamina_timer()
 		$CollectibleStamina.queue_free()
 
 func _on_CollectibleTimer_body_entered(body):
 	if body.name == "Player":
 		start_time += 20000
+		collected_collectible.append("Timer")
+		update_collectible_display()
 		$CollectibleTimer.queue_free()
+
+
+func _on_BGM_finished():
+	$Player/BGM.playing = true

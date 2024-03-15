@@ -4,9 +4,35 @@
 [ext_resource path="res://Assets/Item Images/Strength.png" type="Texture" id=2]
 [ext_resource path="res://Assets/circle.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Fonts/Kenney Pixel Square.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://Scripts/ShopDisplayClickable.gd" type="Script" id=5]
 [ext_resource path="res://Assets/SelectItem.png" type="Texture" id=6]
 [ext_resource path="res://Assets/ItemLocked.png" type="Texture" id=7]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Control
+
+onready var shop = get_parent().get_parent()
+
+var upgrade_group
+var upgrade_percent 
+var upgrade_level
+var upgrade_desc
+var upgrade_price
+var upgrade_bought
+
+
+func _on_BuyItemButton_pressed():
+	if !upgrade_bought:
+		menu_bgm.click()
+		shop.close_other_selection()
+		shop.set_selection(upgrade_group, upgrade_level)
+
+func _on_BuyItemButton_mouse_entered():
+	shop.close_other_item_info()
+	shop.display_item_info(upgrade_group, upgrade_level, upgrade_price, upgrade_desc, upgrade_bought)
+
+func _on_BuyItemButton_mouse_exited():
+	shop.close_other_item_info()
+"
 
 [sub_resource type="DynamicFont" id=1]
 size = 27
@@ -15,7 +41,7 @@ font_data = ExtResource( 4 )
 [node name="ShopDisplayClickable" type="Control"]
 margin_right = 202.0
 margin_bottom = 201.0
-script = ExtResource( 5 )
+script = SubResource( 2 )
 
 [node name="Selected" type="NinePatchRect" parent="."]
 margin_left = -10.0

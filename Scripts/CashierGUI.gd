@@ -2,8 +2,8 @@ extends Control
 
 onready var inventory = get_node("Inventory/GridContainer").get_children()
 onready var cashier = get_node("Cashier/GridContainer").get_children()
-onready var player = get_tree().root.get_child(1).get_node("Player")
-onready var bottom_gui = get_tree().root.get_child(1).get_node("Player/UI/BottomUI")
+onready var player = get_tree().root.get_child(2).get_node("Player")
+onready var bottom_gui = get_tree().root.get_child(2).get_node("Player/UI/BottomUI")
 
 var inventory_buffer = {}
 var cashier_buffer = {}
@@ -71,18 +71,13 @@ func remove_empty_item():
 	inventory_buffer = no_zero_item_inventory
 	cashier_buffer = no_zero_item_cashier
 
-
-
 func open_gui():
 	visible = true
 	reset_buffers()
 	update_displayed_items()
 
-func save_items():
-	# turn buffers into current inventories
-	pass
-
 func _on_CloseButton_pressed():
+	menu_bgm.click()
 	clear_displayed_items()
 	player.enable_move()
 	player.set_gui_opened(false)

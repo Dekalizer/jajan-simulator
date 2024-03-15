@@ -143,10 +143,12 @@ func set_selection(upgrade_group, upgrade_level):
 	self.selected_level = upgrade_level
 
 func _on_BackButton_pressed():
+	menu_bgm.click()
 	get_tree().change_scene("res://Scenes/Main Menu/MainMenu.tscn")
 
 
 func _on_BuyButton_pressed():
+	menu_bgm.click()
 	var player_coins = global.player_coins
 	var price = level_stats[selected_level][1]
 	

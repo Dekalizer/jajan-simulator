@@ -23,6 +23,7 @@ var cart = {}
 var weight = 0
 var default_animation_speed = 2
 var stamina_can_decrease = true
+var applied_upgrades = {}
 
 onready var weight_bar = get_node("UI/BottomUI/WeightBar")
 onready var stamina_bar = get_node("UI/BottomUI/StaminaBar")
@@ -86,9 +87,10 @@ func apply_upgrades():
 			if upgrades_bought[stat][level] == 1 and level > highest_level:
 				highest_level = level
 		
-		# Add the highest level to the new dictionary
+		# Add the highest level to the new dictionary {"Agility":1, "Stamina":0}
 		highest_levels[stat] = highest_level
 	
+	self.applied_upgrades = highest_levels
 	DEFAULT_MOVE_SPEED = (1 + level_stats[highest_levels["Agility"]][0]/100.0) * DEFAULT_MOVE_SPEED
 	MAX_WEIGHT = (1 + level_stats[highest_levels["Strength"]][0]/100.0) * MAX_WEIGHT
 	MAX_STAMINA = (1 + level_stats[highest_levels["Stamina"]][0]/100.0) * MAX_STAMINA

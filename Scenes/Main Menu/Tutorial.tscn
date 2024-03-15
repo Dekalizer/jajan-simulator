@@ -1,4 +1,442 @@
-[gd_scene format=2]
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://Assets/Jajan Simulator Nine Patch Rect GUI.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Arrow.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Fonts/Kenney Pixel Square.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/Main Menu.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Fonts/Kenney Pixel.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Scenes/Main Menu/Tutorial.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 153630.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154224.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154253.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 153825.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 153321.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154410.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154649.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154629.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154509.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154750.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Tutorial Images/Screenshot 2024-03-15 154905.png" type="Texture" id=17]
+
+[sub_resource type="DynamicFont" id=1]
+size = 50
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 23
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 33
+font_data = ExtResource( 5 )
+
+[sub_resource type="StreamTexture" id=4]
+flags = 4
+load_path = "res://.import/Jajan Simulator Nine Patch Rect GUI.png-d8ac364f7b52f3787f2ad02db187a9a4.stex"
+
+[sub_resource type="StreamTexture" id=5]
+flags = 4
+load_path = "res://.import/Jajan Simulator Nine Patch Rect GUI.png-d8ac364f7b52f3787f2ad02db187a9a4.stex"
+
+[sub_resource type="StreamTexture" id=6]
+flags = 4
+load_path = "res://.import/Jajan Simulator Nine Patch Rect GUI.png-d8ac364f7b52f3787f2ad02db187a9a4.stex"
+
+[sub_resource type="StreamTexture" id=7]
+flags = 4
+load_path = "res://.import/Jajan Simulator Nine Patch Rect GUI.png-d8ac364f7b52f3787f2ad02db187a9a4.stex"
+
+[sub_resource type="StreamTexture" id=8]
+flags = 4
+load_path = "res://.import/Jajan Simulator Nine Patch Rect GUI.png-d8ac364f7b52f3787f2ad02db187a9a4.stex"
+
+[sub_resource type="StreamTexture" id=9]
+flags = 4
+load_path = "res://.import/NinePatch 2.png-9001a897021d635897afce894cdd701b.stex"
+
+[sub_resource type="DynamicFont" id=10]
+size = 80
+font_data = ExtResource( 3 )
 
 [node name="Tutorial" type="Control"]
-rect_pivot_offset = Vector2( -376, -518 )
+script = ExtResource( 6 )
+
+[node name="MainMenu" type="Sprite" parent="."]
+position = Vector2( 640, 360 )
+scale = Vector2( 0.666667, 0.666667 )
+texture = ExtResource( 4 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 463.0
+margin_top = 153.0
+margin_right = 835.0
+margin_bottom = 229.0
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "how to play"
+align = 1
+
+[node name="Arrow" type="Sprite" parent="."]
+position = Vector2( 1167, 428 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 2 )
+
+[node name="NextButton" type="Button" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 1126.0
+margin_top = 398.0
+margin_right = 1213.0
+margin_bottom = 465.0
+
+[node name="Arrow2" type="Sprite" parent="."]
+position = Vector2( 112, 428 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 2 )
+flip_h = true
+
+[node name="PreviousButton" type="Button" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_left = 68.0
+margin_top = 396.0
+margin_right = 157.0
+margin_bottom = 465.0
+
+[node name="Pages" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Pages"]
+margin_left = 252.0
+margin_top = 230.0
+margin_right = 1040.0
+margin_bottom = 682.0
+rect_min_size = Vector2( 788, 452 )
+texture = ExtResource( 1 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 40
+
+[node name="TitleLabel" type="Label" parent="Pages/NinePatchRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -197.0
+margin_right = 20.0
+margin_bottom = -174.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Objective"
+align = 1
+
+[node name="Description" type="Label" parent="Pages/NinePatchRect"]
+margin_left = 60.0
+margin_top = 298.0
+margin_right = 746.0
+margin_bottom = 403.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "The objective of this game is to get the required items and to bring it to the cashier to checkout before the timer runs out!
+Hover over the 'Item List' button to see the required items!"
+align = 1
+autowrap = true
+
+[node name="Screenshot2024-03-15153321" type="Sprite" parent="Pages/NinePatchRect"]
+position = Vector2( 554, 185 )
+scale = Vector2( 0.45875, 0.45875 )
+texture = ExtResource( 11 )
+
+[node name="Screenshot2024-03-15153825" type="Sprite" parent="Pages/NinePatchRect"]
+position = Vector2( 217, 187 )
+scale = Vector2( 0.890476, 0.890476 )
+texture = ExtResource( 10 )
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="Pages"]
+visible = false
+margin_left = 252.0
+margin_top = 230.0
+margin_right = 1040.0
+margin_bottom = 682.0
+rect_min_size = Vector2( 788, 452 )
+texture = SubResource( 4 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 40
+
+[node name="TitleLabel" type="Label" parent="Pages/NinePatchRect2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -197.0
+margin_right = 20.0
+margin_bottom = -174.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Movement"
+align = 1
+
+[node name="Description" type="Label" parent="Pages/NinePatchRect2"]
+margin_left = 60.0
+margin_top = 298.0
+margin_right = 746.0
+margin_bottom = 403.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "The movement keys are the classic WASD, with the 'Shift' key to sprint. There is a stamina limit, because your player is tired of running!
+But be careful! the heavier you carry items, the slower you get!"
+align = 1
+autowrap = true
+
+[node name="Screenshot2024-03-15153630" type="Sprite" parent="Pages/NinePatchRect2"]
+position = Vector2( 229, 184 )
+texture = ExtResource( 7 )
+
+[node name="Screenshot2024-03-15154905" type="Sprite" parent="Pages/NinePatchRect2"]
+position = Vector2( 560, 182 )
+texture = ExtResource( 17 )
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Pages"]
+visible = false
+margin_left = 252.0
+margin_top = 230.0
+margin_right = 1040.0
+margin_bottom = 682.0
+rect_min_size = Vector2( 788, 452 )
+texture = SubResource( 5 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 40
+
+[node name="TitleLabel" type="Label" parent="Pages/NinePatchRect3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -197.0
+margin_right = 20.0
+margin_bottom = -174.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Adding items to cart"
+align = 1
+
+[node name="Description" type="Label" parent="Pages/NinePatchRect3"]
+margin_left = 60.0
+margin_top = 298.0
+margin_right = 746.0
+margin_bottom = 403.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "You can open shelves by going in front of a shelf and pressing SPACE or E. To add or remove items, you can press the '-' or '+' button on the shelf, and finally press the 'Add to Cart' button to add the items to your inventory."
+align = 1
+autowrap = true
+
+[node name="Screenshot2024-03-15154224" type="Sprite" parent="Pages/NinePatchRect3"]
+position = Vector2( 262, 181 )
+scale = Vector2( 0.757463, 0.757463 )
+texture = ExtResource( 8 )
+
+[node name="Screenshot2024-03-15154253" type="Sprite" parent="Pages/NinePatchRect3"]
+position = Vector2( 538, 182 )
+scale = Vector2( 0.416152, 0.416152 )
+texture = ExtResource( 9 )
+
+[node name="NinePatchRect4" type="NinePatchRect" parent="Pages"]
+visible = false
+margin_left = 252.0
+margin_top = 230.0
+margin_right = 1040.0
+margin_bottom = 682.0
+rect_min_size = Vector2( 788, 452 )
+texture = SubResource( 6 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 40
+
+[node name="TitleLabel" type="Label" parent="Pages/NinePatchRect4"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -197.0
+margin_right = 20.0
+margin_bottom = -174.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Obstacles"
+align = 1
+
+[node name="Description" type="Label" parent="Pages/NinePatchRect4"]
+margin_left = 60.0
+margin_top = 298.0
+margin_right = 746.0
+margin_bottom = 403.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "The harder the level, the more obstacles will spawn!
+
+Player couldn't go through an obstacle, so choose another path!"
+align = 1
+autowrap = true
+
+[node name="Screenshot2024-03-15154410" type="Sprite" parent="Pages/NinePatchRect4"]
+position = Vector2( 266, 179 )
+scale = Vector2( 0.724609, 0.724609 )
+texture = ExtResource( 12 )
+
+[node name="Screenshot2024-03-15154509" type="Sprite" parent="Pages/NinePatchRect4"]
+position = Vector2( 526, 181 )
+scale = Vector2( 0.783203, 0.783203 )
+texture = ExtResource( 15 )
+
+[node name="NinePatchRect5" type="NinePatchRect" parent="Pages"]
+visible = false
+margin_left = 252.0
+margin_top = 230.0
+margin_right = 1040.0
+margin_bottom = 682.0
+rect_min_size = Vector2( 788, 452 )
+texture = SubResource( 7 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 40
+
+[node name="TitleLabel" type="Label" parent="Pages/NinePatchRect5"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -197.0
+margin_right = 20.0
+margin_bottom = -174.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Collectibles"
+align = 1
+
+[node name="Description" type="Label" parent="Pages/NinePatchRect5"]
+margin_left = 60.0
+margin_top = 298.0
+margin_right = 746.0
+margin_bottom = 403.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "There are two collectibles on the map that will help your jajan
+
+Timer - Gives you an extra 20 seconds of time!
+Stamina - Gives you infinite stamina for 10 seconds!
+"
+align = 1
+autowrap = true
+
+[node name="Screenshot2024-03-15154629" type="Sprite" parent="Pages/NinePatchRect5"]
+position = Vector2( 269, 178 )
+scale = Vector2( 1.05682, 1.05682 )
+texture = ExtResource( 14 )
+
+[node name="Screenshot2024-03-15154649" type="Sprite" parent="Pages/NinePatchRect5"]
+position = Vector2( 519, 177 )
+texture = ExtResource( 13 )
+
+[node name="NinePatchRect6" type="NinePatchRect" parent="Pages"]
+visible = false
+margin_left = 252.0
+margin_top = 230.0
+margin_right = 1040.0
+margin_bottom = 682.0
+rect_min_size = Vector2( 788, 452 )
+texture = SubResource( 8 )
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 40
+
+[node name="TitleLabel" type="Label" parent="Pages/NinePatchRect6"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -197.0
+margin_right = 20.0
+margin_bottom = -174.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 0.607843, 0.392157, 0.231373, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Upgrades"
+align = 1
+
+[node name="Description" type="Label" parent="Pages/NinePatchRect6"]
+margin_left = 60.0
+margin_top = 298.0
+margin_right = 746.0
+margin_bottom = 403.0
+grow_horizontal = 2
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "You can spend your earned coins by upgrading your player stats on the SHOP. You could upgrade your max stamina, max carry weight, and move speed!"
+align = 1
+autowrap = true
+
+[node name="Screenshot2024-03-15154750" type="Sprite" parent="Pages/NinePatchRect6"]
+position = Vector2( 395, 184 )
+scale = Vector2( 0.344075, 0.344075 )
+texture = ExtResource( 16 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_left = 55.0
+margin_top = 630.0
+margin_right = 525.0
+margin_bottom = 810.0
+rect_scale = Vector2( 0.2, 0.2 )
+texture = SubResource( 9 )
+patch_margin_left = 60
+patch_margin_top = 60
+patch_margin_right = 60
+patch_margin_bottom = 120
+
+[node name="Label" type="Label" parent="NinePatchRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -130.0
+margin_top = -80.0
+margin_right = 130.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 10 )
+text = "Back"
+
+[node name="BackButton" type="Button" parent="NinePatchRect"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 470.0
+margin_bottom = 180.0
+
+[connection signal="pressed" from="NextButton" to="." method="_on_NextButton_pressed"]
+[connection signal="pressed" from="PreviousButton" to="." method="_on_PreviousButton_pressed"]
+[connection signal="pressed" from="NinePatchRect/BackButton" to="." method="_on_BackButton_pressed"]

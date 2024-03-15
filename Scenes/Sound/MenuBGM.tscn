@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/sound/Main Menu BGM - Press Play.wav" type="AudioStream" id=1]
+[ext_resource path="res://Scenes/Sound/MenuBGM.gd" type="Script" id=2]
+[ext_resource path="res://Assets/sound/click_002.ogg" type="AudioStream" id=3]
+
+[node name="MenuBGM" type="Node"]
+script = ExtResource( 2 )
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -15.0
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -10.0
+
+[connection signal="finished" from="BGM" to="." method="_on_BGM_finished"]

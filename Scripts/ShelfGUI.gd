@@ -33,36 +33,43 @@ func populate_gui(shelf_type, shelf_items):
 		$ItemQty3.text = "0"
 
 func _on_PlusButton1_pressed():
+	menu_bgm.click()
 	var qty = int($ItemQty1.text) + 1
 	$ItemQty1.text = str(qty)
 
 func _on_PlusButton2_pressed():
+	menu_bgm.click()
 	var qty = int($ItemQty2.text) + 1
 	$ItemQty2.text = str(qty)
 
 func _on_PlusButton3_pressed():
+	menu_bgm.click()
 	var qty = int($ItemQty3.text) + 1
 	$ItemQty3.text = str(qty)
 
 func _on_MinusButton1_pressed():
+	menu_bgm.click()
 	var qty = int($ItemQty1.text) - 1
 	if qty < 0:
 		qty = 0
 	$ItemQty1.text = str(qty)
 
 func _on_MinusButton2_pressed():
+	menu_bgm.click()
 	var qty = int($ItemQty2.text) - 1
 	if qty < 0:
 		qty = 0
 	$ItemQty2.text = str(qty)
 
 func _on_MinusButton3_pressed():
+	menu_bgm.click()
 	var qty = int($ItemQty3.text) - 1
 	if qty < 0:
 		qty = 0
 	$ItemQty3.text = str(qty)
 
 func _on_AddToCartButton_pressed():
+	menu_bgm.click()
 	update_cart()
 	remove_empty_item()
 	player.update_weight()
@@ -97,6 +104,7 @@ func update_item_cart(item_name, item_qty):
 	player.set_cart(cart)
 
 func _on_CloseButton_pressed():
+	menu_bgm.click()
 	player.enable_move()
 	player.set_gui_opened(false)
 	visible = false
