@@ -144,7 +144,7 @@ func _physics_process(delta):
 		sprint_speed = move_speed * SPRINT_SPEED_MULTIPLIER
 		$AnimatedSprite.speed_scale = default_animation_speed
 	else:
-		$AnimatedSprite.speed_scale = max(0.3, 1.0 - weight_percentage) * default_animation_speed
+		$AnimatedSprite.speed_scale = max(0.5, 1.0 - weight_percentage) * default_animation_speed
 
 		# Apply the slowdown to the move speed
 		move_speed = DEFAULT_MOVE_SPEED * (1.0 - min(1.0, weight_percentage - 1.0))

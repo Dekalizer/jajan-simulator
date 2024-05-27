@@ -81,7 +81,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Jajan Simulator"
-run/main_scene="res://Scenes/Main Menu/MainMenu.tscn"
+run/main_scene="res://Scenes/SplashScreen/SplashScreen.tscn"
 run/low_processor_mode=true
 config/icon="res://icon.png"
 

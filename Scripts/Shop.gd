@@ -20,6 +20,9 @@ func _ready():
 	close_other_selection()
 	refresh_display()
 
+func _process(delta):
+	player_coins.text = str(global.player_coins)
+
 func refresh_display():
 	player_coins.text = str(global.player_coins)
 	for i in range(agility_buttons.size()):
